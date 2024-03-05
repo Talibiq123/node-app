@@ -1,10 +1,3 @@
-// console.log("Hello World!!!")
+// console.log("Hello world!");
 
-lib = require('./lib.js')
-
-const a = 5
-
-// function diff(a, b) {
-//     return a - b
-// }
-
+const a = 5;
