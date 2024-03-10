@@ -25,9 +25,29 @@
 // }
 
 
-const express = require('express');
+// const express = require('express');
 
-console.log('Hello world');
+// console.log('Hello world');
 
-const server = express();
+// const server = express();
+// server.listen(8080);
+
+
+
+
+// Chapter 2 --> Web Server
+const http = require('http');
+const fs = require('fs');
+
+const index = fs.readFileSync('index.html', 'utf8');
+const data = fs.readFileSync('data.json', 'utf8');
+
+
+const server = http.createServer((req, res) => {
+    console.log(req.url);
+    console.log('Server Started');
+    res.setHeader('Dummy', 'DummyValue');
+    res.setHeader('Content-Type', 'application/json');
+    res.end(data);
+})
 server.listen(8080);
