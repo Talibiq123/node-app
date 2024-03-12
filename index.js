@@ -45,9 +45,21 @@ const data = fs.readFileSync('data.json', 'utf8');
 
 const server = http.createServer((req, res) => {
     console.log(req.url);
+
+    switch(req.url) {
+        case '/': 
+            res.setHeader('Content-Type', 'text/html');
+            res.end(index);
+        case '/api':
+            res.setHeader('Content-Type', 'application/json');
+            res.end(data);
+        default:
+            res.writeHead(404);
+    }
+
     console.log('Server Started');
-    res.setHeader('Dummy', 'DummyValue');
-    res.setHeader('Content-Type', 'application/json');
-    res.end(data);
+    // res.setHeader('Dummy', 'DummyValue');
+    // res.setHeader('Content-Type', 'application/json');
+    
 })
 server.listen(8080);
