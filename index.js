@@ -1,65 +1,55 @@
-// console.log("Hello world!");
-// const lib = require("./lib.js");
-// import {sum, diff} from "./lib.js";
-// const fs = require("fs");
-
-// const t1 = performance.now();
-// const text = fs.readFileSync('demo.txt', 'utf-8')
-
-// fs.readFile('demo.txt', 'utf-8', (err, txt) => {
-//     console.log(txt);
-// })
-// console.log(text);
-
-
-// console.log(lib.sum(2, 3), lib.diff(10, 5));
-// console.log(sum(2, 3), diff(10, 5));
-
-// const a = 5;
-// console.log(a);
-// const t2 = performance.now();
-// console.log(t2-t1);
-
-// function diff(a, b) {
-//     return a - b;
-// }
-
-
-// const express = require('express');
-
-// console.log('Hello world');
-
-// const server = express();
-// server.listen(8080);
-
-
-
-
-// Chapter 2 --> Web Server
 const http = require('http');
 const fs = require('fs');
 
-const index = fs.readFileSync('index.html', 'utf8');
-const data = fs.readFileSync('data.json', 'utf8');
-
+const index = fs.readFileSync('index.html', 'utf-8');
+const data = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
+const products = data.products;
 
 const server = http.createServer((req, res) => {
-    console.log(req.url);
+  console.log(req.url, req.method);
 
-    switch(req.url) {
-        case '/': 
-            res.setHeader('Content-Type', 'text/html');
-            res.end(index);
-        case '/api':
-            res.setHeader('Content-Type', 'application/json');
-            res.end(data);
-        default:
-            res.writeHead(404);
-    }
+  if(req.url.startsWith('/product')){
+    const id = req.url.split('/')[2]
+    const product = products.find(p=>p.id===(+id))
+    console.log(product)
+    res.setHeader('Content-Type', 'text/html');
+          let modifiedIndex = index.replace('**title**', product.title)
+          .replace('**url**', product.thumbnail)
+          .replace('**price**', product.price)
+          .replace('**rating**', product.rating)
+          res.end(modifiedIndex);
+          return;
+  }
+//   '/product':
+//       res.setHeader('Content-Type', 'text/html');
+//       let modifiedIndex = index.replace('**title**', product.title)
+//       .replace('**url**', product.thumbnail)
+//       .replace('**price**', product.price)
+//       .replace('**rating**', product.rating)
+//       res.end(modifiedIndex);
+//       break;
 
-    console.log('Server Started');
-    // res.setHeader('Dummy', 'DummyValue');
-    // res.setHeader('Content-Type', 'application/json');
-    
-})
+
+
+  switch (req.url) {
+    case '/':
+      res.setHeader('Content-Type', 'text/html');
+      res.end(index);
+      break;
+    case '/api':
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(data));
+      break;
+
+    default:
+      res.writeHead(404);
+      res.end();
+  }
+
+  console.log('server started  ');
+  //   res.setHeader('Dummy', 'DummyValue');
+
+  //
+});
+
 server.listen(8080);
