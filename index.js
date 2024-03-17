@@ -68,10 +68,32 @@ const express = require('express');
 
 const server = express();
 
-server.get('/', (req, res) => {
+// Server API/Endpoints ~ Route
+server.get('/', (req, res, next) => {
+  res.json({type: 'GET'});
+})
+
+server.post('/', (req, res, next) => {
+  res.json({type: 'POST'});
+})
+
+server.put('/', (req, res, next) => {
+  res.json({type: 'PUT'});
+})
+
+server.delete('/', (req, res, next) => {
+  res.json({type: 'DELETE'});
+})
+
+server.pacth('/', (req, res, next) => {
+  res.json({type: 'PATCH'});
+})
+
+server.get('/demo', (req, res) => {
+  // res.sendStatus(404);
   // res.send('<h1>Hello World<h1>');
   // res.sendFile('C:\Users\admin\Desktop\node-app\index.html');
-  res.json(products);
+  // res.json(products);
 })
 
 server.listen(8080, () => {
