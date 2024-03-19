@@ -68,8 +68,29 @@ const express = require('express');
 
 const server = express();
 
+server.use(express.json())
+
+// Middleware
+server.use((req, res, next) => {
+  console.log(req.method, req.ip, req.hostname, req.get('User-Agent'));
+  next();
+})
+
+const auth = (req, res, next) => {
+  console.log(req.query);
+
+  if (req.query.password = "123") {
+    next();
+  } else {
+    res.sendStatus(403);
+  }
+  
+}
+
+server.use(auth);
+
 // Server API/Endpoints ~ Route
-server.get('/', (req, res, next) => {
+server.get('/', auth, (req, res, next) => {
   res.json({type: 'GET'});
 })
 
@@ -85,7 +106,7 @@ server.delete('/', (req, res, next) => {
   res.json({type: 'DELETE'});
 })
 
-server.pacth('/', (req, res, next) => {
+server.patch('/', (req, res, next) => {
   res.json({type: 'PATCH'});
 })
 
