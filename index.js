@@ -65,16 +65,20 @@ const data = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
 const products = data.products;
 
 const express = require('express');
+const morgan = require('morgan');
 
 const server = express();
 
 server.use(express.json())
 
 // Middleware
-server.use((req, res, next) => {
-  console.log(req.method, req.ip, req.hostname, req.get('User-Agent'));
-  next();
-})
+// server.use((req, res, next) => {
+//   console.log(req.method, req.ip, req.hostname, req.get('User-Agent'));
+//   next();
+// })
+
+// server.use(exppress.static('public'));
+server.use(morgan('default'));
 
 const auth = (req, res, next) => {
   console.log(req.query);
