@@ -78,29 +78,46 @@ server.use(express.json())
 // })
 
 // server.use(exppress.static('public'));
+
+// body parser
+server.use(express.json());
 server.use(morgan('default'));
 
-const auth = (req, res, next) => {
-  console.log(req.query);
+// const auth = (req, res, next) => {
+//   console.log(req.query);
 
-  if (req.query.password = "123") {
-    next();
-  } else {
-    res.sendStatus(403);
-  }
+//   if (req.query.password = "123") {
+//     next();
+//   } else {
+//     res.sendStatus(403);
+//   }
   
-}
+// }
 
-server.use(auth);
+// server.use(auth);
 
 // Server API/Endpoints ~ Route
-server.get('/', auth, (req, res, next) => {
-  res.json({type: 'GET'});
-})
+// Products
+// Read / Get Products
 
-server.post('/', (req, res, next) => {
+// Create API/ POST/products    C R U D
+server.post('/products', (req, res, next) => {
+  console.log(req.body);
+  products.body(req.body);
   res.json({type: 'POST'});
 })
+
+server.get('/products', (req, res) => {
+  res.json(products);
+})
+server.get('/products/:id', (req, res) => {
+  console.log(req.params.id)
+  const id = +req.params.id;
+  const product = products.find(p => p.id===id)
+  res.json(product);
+})
+
+
 
 server.put('/', (req, res, next) => {
   res.json({type: 'PUT'});
