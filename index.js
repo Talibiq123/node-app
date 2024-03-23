@@ -58,18 +58,18 @@
 
 
 // Express JS
-const fs = require('fs');
+// const fs = require('fs');
 
-const index = fs.readFileSync('index.html', 'utf-8');
-const data = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
-const products = data.products;
+// const index = fs.readFileSync('index.html', 'utf-8');
+// const data = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
+// const products = data.products;
 
 const express = require('express');
 const morgan = require('morgan');
-
 const server = express();
-
-server.use(express.json())
+server.use(express.json());
+const productRouter = require('./routes/product');
+const userRouter = require('./routes/user');
 
 // Middleware
 // server.use((req, res, next) => {
@@ -82,6 +82,10 @@ server.use(express.json())
 // body parser
 server.use(express.json());
 server.use(morgan('default'));
+server.use(express.static('public'));
+// Middleware for Router 
+server.use('/products', productRouter.router);
+server.use('/users', userRouter.router);
 
 // const auth = (req, res, next) => {
 //   console.log(req.query);
@@ -100,43 +104,55 @@ server.use(morgan('default'));
 // Products
 // Read / Get Products
 
+
+
+
 // Create API/ POST/products    C R U D
-server.post('/products', (req, res, next) => {
-  console.log(req.body);
-  products.body(req.body);
-  res.json({type: 'POST'});
-})
-
-server.get('/products', (req, res) => {
-  res.json(products);
-})
-server.get('/products/:id', (req, res) => {
-  console.log(req.params.id)
-  const id = +req.params.id;
-  const product = products.find(p => p.id===id)
-  res.json(product);
-})
+// productRouter
+// .post('/products', productController.createProduct)
+// .get('/products', productController.getAllProducts)
+// .get('/products/:id', productController.getProduct)
+// .put('/products/:id', productController.replaceProduct)
+// .patch('/products/:id', productController.updateProduct)
+// .delete('/products/:id', productController.deleteProduct);
 
 
+// server.post('/products', (req, res, next) => {
+//   console.log(req.body);
+//   products.body(req.body);
+//   res.json({type: 'POST'});
+// })
 
-server.put('/', (req, res, next) => {
-  res.json({type: 'PUT'});
-})
+// server.get('/products', (req, res) => {
+//   res.json(products);
+// })
+// server.get('/products/:id', (req, res) => {
+//   console.log(req.params.id)
+//   const id = +req.params.id;
+//   const product = products.find(p => p.id===id)
+//   res.json(product);
+// })
 
-server.delete('/', (req, res, next) => {
-  res.json({type: 'DELETE'});
-})
 
-server.patch('/', (req, res, next) => {
-  res.json({type: 'PATCH'});
-})
 
-server.get('/demo', (req, res) => {
+// server.put('/', (req, res, next) => {
+//   res.json({type: 'PUT'});
+// })
+
+// server.delete('/', (req, res, next) => {
+//   res.json({type: 'DELETE'});
+// })
+
+// server.patch('/', (req, res, next) => {
+//   res.json({type: 'PATCH'});
+// })
+
+// server.get('/demo', (req, res) => {
   // res.sendStatus(404);
   // res.send('<h1>Hello World<h1>');
   // res.sendFile('C:\Users\admin\Desktop\node-app\index.html');
   // res.json(products);
-})
+// })
 
 server.listen(8080, () => {
   console.log("Server Initiated...");
