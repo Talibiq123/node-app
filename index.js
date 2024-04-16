@@ -66,10 +66,14 @@
 
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 const server = express();
 server.use(express.json());
 const productRouter = require('./routes/product');
 const userRouter = require('./routes/user');
+
+// dbconnection for nodejs
+mongoose.connect('mongodb://127.0.0.1:27017/EcommerceTest');
 
 // Middleware
 // server.use((req, res, next) => {
@@ -86,6 +90,7 @@ server.use(express.static('public'));
 // Middleware for Router 
 server.use('/products', productRouter.router);
 server.use('/users', userRouter.router);
+
 
 // const auth = (req, res, next) => {
 //   console.log(req.query);
